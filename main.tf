@@ -11,10 +11,15 @@ provider "github" {
   token = var.github_token
 }
 
-resource "github_repository_pages" "main" {
-  repository = var.repository_name
-  source {
-    branch = "gh-pages"
-    path   = "/"
+resource "github_repository" "main" {
+  name        = var.repository_name
+  description = "My CI/CD repository"
+  visibility  = "public"
+
+  pages {
+    source {
+      branch = "main" # Change to the branch serving GitHub Pages
+      path   = "/"     # Root directory for GitHub Pages
+    }
   }
 }
