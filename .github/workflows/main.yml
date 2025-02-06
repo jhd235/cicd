@@ -1,0 +1,35 @@
+name: Deploy Static Web App
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: latest
+      
+      - name: Initialize OpenTofu
+        run: tofu init
+      
+      - name: Apply OpenTofu
+        run: tofu apply -auto-approve
+      
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./website
+      
+      - name: Publish to GitHub Pages
+        uses: actions/deploy-pages@v4
